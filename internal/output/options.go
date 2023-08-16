@@ -5,12 +5,12 @@ import (
 	"bytes"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"os"
+
+	"golang.org/x/tools/imports"
 
 	"github.com/cweill/gotests/internal/models"
 	"github.com/cweill/gotests/internal/render"
-	"golang.org/x/tools/imports"
 )
 
 type Options struct {
@@ -20,7 +20,7 @@ type Options struct {
 	Named          bool
 	Template       string
 	TemplateDir    string
-	TemplateParams map[string]interface{}
+	TemplateParams map[string]any
 	TemplateData   [][]byte
 
 	render *render.Render
@@ -43,7 +43,7 @@ func (o *Options) Process(head *models.Header, funcs []*models.Function) ([]byte
 	}
 
 	//
-	tf, err := ioutil.TempFile("", "gotests_")
+	tf, err := os.CreateTemp("", "gotests_")
 	if err != nil {
 		return nil, fmt.Errorf("ioutil.TempFile: %v", err)
 	}

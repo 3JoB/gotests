@@ -18,7 +18,7 @@ type Render struct {
 
 func New() *Render {
 	r := Render{
-		tmpls: template.New("render").Funcs(map[string]interface{}{
+		tmpls: template.New("render").Funcs(map[string]any{
 			"Field":    fieldName,
 			"Receiver": receiverName,
 			"Param":    parameterName,
@@ -104,14 +104,14 @@ func (r *Render) TestFunction(
 	subtests bool,
 	named bool,
 	parallel bool,
-	params map[string]interface{}) error {
+	params map[string]any) error {
 	return r.tmpls.ExecuteTemplate(w, "function", struct {
 		*models.Function
 		PrintInputs    bool
 		Subtests       bool
 		Parallel       bool
 		Named          bool
-		TemplateParams map[string]interface{}
+		TemplateParams map[string]any
 	}{
 		Function:       f,
 		PrintInputs:    printInputs,

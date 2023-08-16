@@ -9,7 +9,7 @@ import (
 	"go/parser"
 	"go/token"
 	"go/types"
-	"io/ioutil"
+	"os"
 	"strings"
 
 	"github.com/cweill/gotests/internal/models"
@@ -22,6 +22,7 @@ var ErrEmptyFile = errors.New("file is empty")
 type Result struct {
 	// The package name and imports of a Go file.
 	Header *models.Header
+
 	// All the functions and methods in a Go file.
 	Funcs []*models.Function
 }
@@ -60,7 +61,7 @@ func (p *Parser) Parse(srcPath string, files []models.Path) (*Result, error) {
 }
 
 func (p *Parser) readFile(srcPath string) ([]byte, error) {
-	b, err := ioutil.ReadFile(srcPath)
+	b, err := os.ReadFile(srcPath)
 	if err != nil {
 		return nil, fmt.Errorf("ioutil.ReadFile: %v", err)
 	}
@@ -137,7 +138,6 @@ func parsePkgComment(f *ast.File, pkgPos token.Pos) []string {
 	var count int
 
 	for _, comment := range f.Comments {
-
 		if comment.End() >= pkgPos {
 			break
 		}
@@ -241,7 +241,6 @@ func parseReceiver(fl *ast.FieldList, ul map[string]types.Type, el map[*types.St
 		f.Name = s.Field(i).Name()
 	}
 	return r
-
 }
 
 func parseFieldList(fl *ast.FieldList, ul map[string]types.Type) []*models.Field {

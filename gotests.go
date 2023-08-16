@@ -6,9 +6,10 @@ import (
 	"go/importer"
 	"go/types"
 	"path"
-	"regexp"
 	"sort"
 	"sync"
+
+	"github.com/grafana/regexp"
 
 	"github.com/cweill/gotests/internal/goparser"
 	"github.com/cweill/gotests/internal/input"
@@ -18,18 +19,18 @@ import (
 
 // Options provides custom filters and parameters for generating tests.
 type Options struct {
-	Only           *regexp.Regexp         // Includes only functions that match.
-	Exclude        *regexp.Regexp         // Excludes functions that match.
-	Exported       bool                   // Include only exported methods
-	PrintInputs    bool                   // Print function parameters in error messages
-	Subtests       bool                   // Print tests using Go 1.7 subtests
-	Parallel       bool                   // Print tests that runs the subtests in parallel.
-	Named          bool                   // Create Map instead of slice
-	Importer       func() types.Importer  // A custom importer.
-	Template       string                 // Name of custom template set
-	TemplateDir    string                 // Path to custom template set
-	TemplateParams map[string]interface{} // Custom external parameters
-	TemplateData   [][]byte               // Data slice for templates
+	Only           *regexp.Regexp        // Includes only functions that match.
+	Exclude        *regexp.Regexp        // Excludes functions that match.
+	Exported       bool                  // Include only exported methods
+	PrintInputs    bool                  // Print function parameters in error messages
+	Subtests       bool                  // Print tests using Go 1.7 subtests
+	Parallel       bool                  // Print tests that runs the subtests in parallel.
+	Named          bool                  // Create Map instead of slice
+	Importer       func() types.Importer // A custom importer.
+	Template       string                // Name of custom template set
+	TemplateDir    string                // Path to custom template set
+	TemplateParams map[string]any        // Custom external parameters
+	TemplateData   [][]byte              // Data slice for templates
 }
 
 // A GeneratedTest contains information about a test file with generated tests.

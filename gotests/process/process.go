@@ -4,12 +4,12 @@
 package process
 
 import (
-	"encoding/json"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"os"
-	"regexp"
+
+	"github.com/goccy/go-json"
+	"github.com/grafana/regexp"
 
 	"github.com/cweill/gotests"
 )
@@ -74,10 +74,10 @@ func parseOptions(out io.Writer, opt *Options) *gotests.Options {
 		return nil
 	}
 
-	templateParams := map[string]interface{}{}
+	templateParams := map[string]any{}
 	jfile := opt.TemplateParamsPath
 	if jfile != "" {
-		buf, err := ioutil.ReadFile(jfile)
+		buf, err := os.ReadFile(jfile)
 		if err != nil {
 			fmt.Fprintf(out, "Failed to read from %s ,err %s", jfile, err)
 			return nil
@@ -133,7 +133,7 @@ func generateTests(out io.Writer, path string, writeOutput bool, opt *gotests.Op
 
 func outputTest(out io.Writer, t *gotests.GeneratedTest, writeOutput bool) {
 	if writeOutput {
-		if err := ioutil.WriteFile(t.Path, t.Output, newFilePerm); err != nil {
+		if err := os.WriteFile(t.Path, t.Output, newFilePerm); err != nil {
 			fmt.Fprintln(out, err)
 			return
 		}

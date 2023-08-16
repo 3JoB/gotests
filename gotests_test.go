@@ -5,14 +5,15 @@ import (
 	"errors"
 	"go/types"
 	"io/ioutil"
+	"os"
 	"path"
 	"path/filepath"
-	"regexp"
 	"runtime"
 	"strings"
 	"testing"
 	"unicode"
 
+	"github.com/grafana/regexp"
 	"golang.org/x/tools/imports"
 )
 
@@ -871,13 +872,13 @@ func TestGenerateTests(t *testing.T) {
 			want: mustReadAndFormatGoFile(t, "testdata/named/named_on_subtests_on_parallel_on_template_testify.go"),
 		},
 	}
-	tmp, err := ioutil.TempDir("", "gotests_test")
+	tmp, err := os.MkdirTemp("", "gotests_test")
 	if err != nil {
 		t.Fatalf("ioutil.TempDir: %v", err)
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			var params map[string]interface{}
+			var params map[string]any
 			var err error
 			if tt.args.templateParamsPath != "" {
 				params, err = loadExternalJsonFile(tt.args.templateParamsPath)
@@ -948,19 +949,19 @@ func mustReadAndFormatGoFile(t *testing.T, filename string) string {
 
 func outputResult(t *testing.T, tmpDir, testName string, got []byte) {
 	tmpResult := path.Join(tmpDir, toSnakeCase(testName)+".go")
-	if err := ioutil.WriteFile(tmpResult, got, 0644); err != nil {
+	if err := os.WriteFile(tmpResult, got, 0644); err != nil {
 		t.Errorf("ioutil.WriteFile: %v", err)
 	}
 	t.Logf(tmpResult)
 }
 
-func loadExternalJsonFile(file string) (map[string]interface{}, error) {
-	buf, err := ioutil.ReadFile(file)
+func loadExternalJsonFile(file string) (map[string]any, error) {
+	buf, err := os.ReadFile(file)
 	if err != nil {
 		return nil, err
 	}
 
-	params := map[string]interface{}{}
+	params := map[string]any{}
 	err = json.Unmarshal(buf, &params)
 	return params, err
 }
@@ -982,7 +983,7 @@ func mustLoadExternalTemplateDir(t *testing.T, dir string) [][]byte {
 }
 
 func mustLoadExternalTemplateFile(t *testing.T, file string) []byte {
-	buf, err := ioutil.ReadFile(file)
+	buf, err := os.ReadFile(file)
 	if err != nil {
 		t.Fatalf("loading external template file: %v", err)
 	}

@@ -1,5 +1,14 @@
 module github.com/cweill/gotests
 
-require golang.org/x/tools v0.0.0-20191109212701-97ad0ed33101
+require (
+	github.com/goccy/go-json v0.10.2
+	github.com/grafana/regexp v0.0.0-20221122212121-6b5c0a4cb7fd
+	golang.org/x/tools v0.12.0
+)
 
-go 1.6
+require (
+	golang.org/x/mod v0.12.0 // indirect
+	golang.org/x/sys v0.11.0 // indirect
+)
+
+go 1.21.0

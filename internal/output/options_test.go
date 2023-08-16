@@ -8,11 +8,11 @@ func TestOptions_providesTemplateData(t *testing.T) {
 		otpions *Options
 		want    bool
 	}{
-		{"Opt is nil", nil, false},
-		{"Opt is empty", &Options{}, false},
-		{"TemplateData is nil", &Options{TemplateData: nil}, false},
-		{"TemplateData is empty", &Options{TemplateData: [][]byte{}}, false},
-		{"TemplateData is OK", &Options{TemplateData: [][]byte{[]byte("ok")}}, true},
+		{name: "Opt is nil", otpions: nil, want: false},
+		{name: "Opt is empty", otpions: &Options{}, want: false},
+		{name: "TemplateData is nil", otpions: &Options{TemplateData: nil}, want: false},
+		{name: "TemplateData is empty", otpions: &Options{TemplateData: [][]byte{}}, want: false},
+		{name: "TemplateData is OK", otpions: &Options{TemplateData: [][]byte{[]byte("ok")}}, want: true},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -29,10 +29,10 @@ func TestOptions_providesTemplate(t *testing.T) {
 		otpions *Options
 		want    bool
 	}{
-		{"Opt is nil", nil, false},
-		{"Opt is empty", &Options{}, false},
-		{"Template is empty (implicit_zero_val)", &Options{Template: ""}, false},
-		{"Template is OK", &Options{Template: "testify"}, true},
+		{name: "Opt is nil", otpions: nil, want: false},
+		{name: "Opt is empty", otpions: &Options{}, want: false},
+		{name: "Template is empty (implicit_zero_val)", otpions: &Options{Template: ""}, want: false},
+		{name: "Template is OK", otpions: &Options{Template: "testify"}, want: true},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -49,10 +49,10 @@ func TestOptions_providesTemplateDir(t *testing.T) {
 		otpions *Options
 		want    bool
 	}{
-		{"Opt is nil", nil, false},
-		{"Opt is empty", &Options{}, false},
-		{"Template is empty", &Options{TemplateDir: ""}, false},
-		{"Template is OK", &Options{TemplateDir: "testify"}, true},
+		{name: "Opt is nil", otpions: nil, want: false},
+		{name: "Opt is empty", otpions: &Options{}, want: false},
+		{name: "Template is empty", otpions: &Options{TemplateDir: ""}, want: false},
+		{name: "Template is OK", otpions: &Options{TemplateDir: "testify"}, want: true},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
